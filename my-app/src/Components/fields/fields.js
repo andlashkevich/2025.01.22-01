@@ -1,26 +1,22 @@
 import styles from './fields.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 
-const FieldLayout = ({ handleStep }) => {
-	const fields = useSelector((state) => state.fields);
-
-	return (
-		<div className={styles.container}>
-			{fields.map((it, id) => {
-				return (
-					<button
-						ind={id}
-						key={id}
-						className={styles.button}
-						onClick={handleStep}
-					>
-						{it}
-					</button>
-				);
-			})}
-		</div>
-	);
-};
+const FieldLayout = ({ handleStep, fields }) => (
+	<div className={styles.container}>
+		{fields.map((it, id) => {
+			return (
+				<button
+					ind={id}
+					key={id}
+					className={styles.button}
+					onClick={(e) => handleStep(e, id)}
+				>
+					{it}
+				</button>
+			);
+		})}
+	</div>
+);
 
 export const Fields = () => {
 	const fields = useSelector((state) => state.fields);
@@ -40,10 +36,10 @@ export const Fields = () => {
 		[2, 4, 6],
 	];
 
-	const handleStep = (event) => {
+	const handleStep = (e, id) => {
 		let ar = [...fields];
-		if (!isDraw && !isGameEnded && event.target.textContent === ' ') {
-			ar[event.target.outerHTML[13]] = currentPlayer;
+		if (!isDraw && !isGameEnded && e.target.textContent === ' ') {
+			ar[id] = currentPlayer;
 			dispatch({ type: 'SET_FIELD', payload: ar });
 		}
 
